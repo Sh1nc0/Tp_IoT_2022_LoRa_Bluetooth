@@ -175,6 +175,23 @@ Installer la lib **LoRa** (Croquis/Inclure une bibliothèque/Gérer les biblioth
 
 ### Réception message via LoRa
 
+Afin de réduire la taille du packet transmit, nous avons créé une structure pour notre paquet
+```c
+struct packet {
+  unsigned short freq : 8;
+  unsigned int sb : 12;
+  unsigned char sf : 4;
+} packet_data;
+```
+Cela est possible car la frequence va varier de 868.1 a 868.5.
+
+Ce code est un programme Arduino pour un ESP32 combinant MQTT, Wi-Fi et LoRa pour transmettre et recevoir des données. Voici un résumé de son fonctionnement :
+- Wi-Fi et MQTT : Le programme connecte l'ESP32 au Wi-Fi avec les identifiants fournis. Il établit une connexion avec le broker MQTT (test.mosquitto.org) sur le port 1883 et s'abonne au topic CR7. Des données sérialisées (3 octets) représentant la structure packet sont publiées sur ce topic.
+- Réception MQTT et configuration LoRa : Lorsqu'un message est reçu via MQTT, les 3 octets sont désérialisés pour extraire les paramètres LoRa (freq, sb, sf). Ces paramètres sont utilisés pour configurer un module LoRa (fréquence, bande passante, facteur d'étalement).
+- Transmission LoRa : Une fonction loop_lora envoie périodiquement un paquet LoRa contenant des données flottantes (sdp.data).
+
+Le code fusionne la communication MQTT (réseau) et LoRa (radio), permettant un transfert de paramètres via MQTT pour piloter des transmissions LoRa dynamiques.
+
 ```c
 #include <ArduinoMqttClient.h>
 #include <WiFi.h>
