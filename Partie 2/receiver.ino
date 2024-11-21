@@ -11,8 +11,7 @@
 #define RST 14
 #define DI0 26
 
-
-char ssid[] = "";  // SSID
+char ssid[] = ""; // SSID
 char pass[] = ""; // password
 
 // Gestion des valeurs reçues
@@ -81,8 +80,7 @@ void setup()
 
 void loop()
 {
-    // call poll() regularly to allow the library to receive MQTT messages and
-    // send MQTT keep alive which avoids being disconnected by the broker
+    // Appel régulier à poll() pour gérer les messages MQTT et maintenir la connexion
     mqttClient.poll();
 }
 
