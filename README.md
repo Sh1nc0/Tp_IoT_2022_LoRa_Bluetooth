@@ -1,39 +1,109 @@
-# Tp_IoT_2022_LoRa_Bluetooth
+# Compte rendu TP LoRA 📡  
 
-Ce TP est à réaliser à deux groupes. (PIPON Romain / LELECR Léo)
+![Arduino](https://img.shields.io/badge/Arduino-00979D?style=for-the-badge&logo=Arduino&logoColor=white)
+![Polytech](https://img.shields.io/badge/Polytech-0078D7?style=for-the-badge&logo=Polytech&logoColor=white)
+![LoRa](https://img.shields.io/badge/LoRa-00BFFF?style=for-the-badge&logo=LoRa&logoColor=white)
+![MQTT](https://img.shields.io/badge/MQTT-660066?style=for-the-badge&logo=MQTT&logoColor=white)
 
-## 1. Mise en place
+## Auteurs ✍️  
 
-### 1. Installer l'IDE arduino et les dépendances nécessaires
+**Groupe 1**  
+- 📧 [romain.pipon@etu.univ-nantes.fr](mailto:romain.pipon@etu.univ-nantes.fr)  
+- 📧 [leo.leclerc1@etu.univ-nantes.fr](mailto:leo.leclerc1@etu.univ-nantes.fr)  
 
-cf. [http://www.smartcomputerlab.org/](http://www.smartcomputerlab.org/)
+**Groupe 2**  
+- 📧 [yann-philippe-fokammbopda@etu.univ-nantes.fr](mailto:yann-philippe.fokam-mbopda@etu.univ-nantes.fr)  
+- 📧 [tanguy.hue@etu.univ-nantes.fr](mailto:tanguy.hue@etu.univ-nantes.fr)  
 
-### 2. Se connecter sur un point d'accès Wifi
+---
 
-### 3. Envoyer une message mqtt sur test.mosquitto.org tp_popo/alban
+## Installation sur Windows 🖥️  
 
-## 2. LoRa
+```bash
+$ pip3 install pyserial
+```  
 
-### 1. Définir des valeurs communes (à faire au tableau)
+🔧 **Étape importante :** Installer le driver fourni dans le fichier ZIP du dossier Windows 🗂️ (*"CP210x_Windows_Drivers.zip"*) et ouvrir **CP210xVCPInstaller_x64.exe**.  
 
-### 2. Communiquer via mqtt des données
+---
 
-Groupe 1: Envoyer un message mqtt donnant les valeurs nécessaires à une reception via LoRa.
+## Partie 1 🔍  
 
-Groupe 2. Ecouter les messages mqtt en en déduire les valeurs pour un envoi de données via Lora.
+🚀 **Objectif :** Tester et valider le bon fonctionnement de la carte ESP32.  
 
-### 3. Communiquer via LoRa des données
+Les fichiers correspondants sont disponibles dans le dossier `Partie 1`.  
 
-Groupe 1: Écouter les messages LoRa et les afficher.
+### Test ESP32 🔧  
 
-Groupe 2. Envoyer un message LoRa contenant une valeur venant d'un capteur.
+🛠️ Le script `Test.ino` permet :  
+- **D'afficher un message sur l'écran** fourni avec l'ESP32.  
 
-## 3. Inversion
+### Test WiFi 🌐  
 
-Après avoir réussi une communication, la carte du groupe 1 et celle du groupe 2 inversent leurs rôles.
+📶 Le script `1-2 Wifi.ino` vérifie la connexion au module WiFi et affiche l'état de la connexion.  
 
-## 4. Bluetooth (ou BLE)
+### Test MQTT 📨  
 
-À la place de communiquer les valeurs venant d'un capteur, continuer la discussion pour ouvrir un canal Bluetooth.
+🔗 **Protocole MQTT :**  
+- Utilisation de la bibliothèque **ArduinoMqttClient**.  
+- Le script `1-3 MQTT.ino` permet :  
+  - **De se connecter à un serveur MQTT**.  
+  - **D'envoyer un message sur un topic**.  
+  - **D'afficher les messages reçus sur le port série**.  
 
+---
 
+## Partie 2 📡  
+
+🚀 **Objectif :** Connecter deux cartes ESP32 via LoRa.  
+
+Les fichiers correspondants se trouvent dans le dossier `Partie 2`.  
+
+### Configuration LoRa ⚙️  
+
+🔄 Les informations de connexion LoRa sont :  
+- **Envoyées via MQTT**.  
+- **Compressées dans une structure de données** pour optimiser leur envoi (3 octets).  
+
+```c
+struct packet {
+  unsigned short freq : 8;  // Fréquence
+  unsigned int sb : 12;     // Bande passante
+  unsigned char sf : 4;     // Facteur d'étalement
+} packet_data;
+```  
+
+> 🌟 Cette optimisation est basée sur les valeurs maximales des paramètres pour minimiser la taille des données. Des calculs sont effectués
+pour obtenir les valeurs réelles.  
+
+### Fonctionnement global 🔄  
+
+📋 Le code fusionne **Wi-Fi, MQTT et LoRa** pour transmettre et recevoir des données.  
+
+#### Étapes principales :  
+1. **Wi-Fi et MQTT**  
+   - Connexion au réseau Wi-Fi avec les identifiants fournis.  
+   - Connexion au broker MQTT (test.mosquitto.org) sur le port 1883.  
+   - Abonnement au topic `CR7`.  
+   - Publication des données sérialisées représentant la structure `packet`.  
+
+2. **Réception MQTT et configuration LoRa**  
+   - **Désérialisation des messages MQTT** pour extraire les paramètres LoRa (freq, sb, sf).  
+   - **Configuration du module LoRa** avec ces paramètres.  
+
+3. **Transmission LoRa**  
+   - Une fonction `loop_lora` envoie périodiquement un paquet LoRa contenant des données flottantes (`sdp.data`).  
+
+### Fichiers associés 📂  
+
+- **`receiver.ino` :**  
+  - Reçoit les informations de connexion LoRa via MQTT.  
+- **`sender.ino` :**  
+  - Envoie les informations de connexion LoRa.  
+
+💡 **Résumé :**  
+Ce projet combine la communication **MQTT (réseau)** et **LoRa (radio)** pour piloter dynamiquement des transmissions via LoRa grâce aux messages reçus via MQTT. 🎯  
+
+--- 
+
+✨ Avec cette approche, le système est optimisé pour des échanges rapides et efficaces entre les deux technologies. 🌐📡
