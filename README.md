@@ -8,12 +8,12 @@
 ## Auteurs ✍️  
 
 **Groupe 1**  
-- 📧 [romain.pipon@etu.univ-nantes.fr](mailto:romain.pipon@etu.univ-nantes.fr)  
-- 📧 [leo.leclerc1@etu.univ-nantes.fr](mailto:leo.leclerc1@etu.univ-nantes.fr)  
+- 📧 [Romain PIPON](mailto:romain.pipon@etu.univ-nantes.fr)  
+- 📧 [Leo LECLERC](mailto:leo.leclerc1@etu.univ-nantes.fr)  
 
 **Groupe 2**  
-- 📧 [yann-philippe-fokammbopda@etu.univ-nantes.fr](mailto:yann-philippe.fokam-mbopda@etu.univ-nantes.fr)  
-- 📧 [tanguy.hue@etu.univ-nantes.fr](mailto:tanguy.hue@etu.univ-nantes.fr)  
+- 📧 [Yann Philippe FOKAM MBOPDA](mailto:yann-philippe.fokam-mbopda@etu.univ-nantes.fr)  
+- 📧 [Tanguy HUE](mailto:tanguy.hue@etu.univ-nantes.fr)  
 
 ---
 
@@ -55,7 +55,7 @@ Les fichiers correspondants sont disponibles dans le dossier `Partie 1`.
 
 ## Partie 2 📡  
 
-🚀 **Objectif :** Connecter deux cartes ESP32 via LoRa.  
+🚀 Dans cette seconde partie, nous avons fait en sorte de connecter deux cartes ESP32 via LoRa.  
 
 Les fichiers correspondants se trouvent dans le dossier `Partie 2`.  
 
